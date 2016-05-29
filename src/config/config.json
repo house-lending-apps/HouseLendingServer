@@ -1,0 +1,6 @@
+{
+  "paths" : {
+    "scripts": ["src/app/**/*.js"],
+    "dist": "dist"
+  }
+}
