@@ -1,28 +1,20 @@
-// Way 2: Exporting anonymous function
-// module.exports = function() {
-//}
-
-// Way 4: EXPORT AN ANONYMOUS OBJECT
-/*
- var Buz = function () {};
-
- Buz.prototype.log = function () {
- console.log('buz!');
- };
-
- module.exports = new Buz();
- */
-
-(function(databaseClient){
+(function (databaseClient) {
+    var q = require('q');
+    var _ = require('lodash');
     var mongoClient = require('mongodb').MongoClient;
     var connection = undefined;
-    databaseClient.init = function(){
+    var mongodbURL = '';
+
+
+    databaseClient.init = function (config) {
+        mongodbURL = config.mongo - db - url;
 
     };
 
-    var getConnection = function(){
-        if(connection === undefined){
-            mongoClient.connect('mongodb://localhost:27017/house-lending', function(err, db) {
+    var getConnection = function () {
+        if (connection === undefined) {
+            mongoClient.connect(mongodbURL, function (err, db) {
+                //mongoClient.connect('mongodb://localhost:27017/house-lending', function(err, db) {
                 if (err) {
                     console.log(err);
                     throw err;
@@ -31,7 +23,6 @@
                 return connection;
             });
         } else {
-            // using already available connection
             return connection;
         }
 
@@ -52,37 +43,78 @@
      4.  Delete data
      */
 
-    databaseClient.insertData = function(table, payload){
-      var db = getConnection();
-      var collection = db.collection(table);
+    databaseClient.insert = function (table, payload) {
+        var db = getConnection();
+        var collection = db.collection(table);
+        var defer = q.defer();
 
-
-      if(Array.isArray(payload)){
-          collection.insertMany(payload, function(err, result){
-              if (err) {
-                  console.log(err);
-
-              } else {
-
-              }
-
-          });
-
-      } else {
-          collection.insertOne(payload, function(err, result){
-
-          });
-
-      }
-
+        if (Array.isArray(payload)) {
+            collection.insertMany(payload, function (err, result) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(result);
+                }
+            });
+        } else {
+            collection.insertOne(payload, function (err, result) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(result);
+                }
+            });
+        }
+        return defer.promise;
     };
 
-    databaseClient.exit = function() {
-      closeConnection();
+    /** Update database **/
+    databaseClient.update = function (table, searchFilter, updatedPayload) {
+        var defer = q.defer();
+        var db = getConnection();
+        var collection = db.collection(table);
+
+        collection.updateOne(
+            searchFilter,
+            updatedPayload,
+            function (err, result) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(result);
+                }
+            });
+
+        return defer.promise;
+    };
+
+    /** Find query to return data **/
+    databaseClient.find = function (table, searchFilter) {
+        var defer = q.defer();
+        var db = getConnection();
+        var collection = db.collection(table);
+
+        var cursor = collection.find(searchFilter);
+        var result = [];
+        cursor.each(function (err, doc) {
+            if (err) {
+
+            } else {
+                if (doc != null) {
+                    result.push(doc);
+                } else {
+
+                }
+            }
+        });
+
+        return result;
     };
 
 
-
+    databaseClient.exit = function () {
+        closeConnection();
+    };
 
 
 }(module.exports));

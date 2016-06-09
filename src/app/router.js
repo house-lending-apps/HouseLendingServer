@@ -3,13 +3,10 @@ var router = express.Router();
 
 var authResource = require('../api/auth/authResource');
 
-
-// middleware that is specific to this router
-router.use(function timeLog(req, res, next) {
-    next();
+// authenticate
+router.get('/', function(req, resp, next){
+   resp.status(200).send({'test':'test'});
 });
-
-// Healthcheck service
 router.head('/api/authenticate', authResource.healthcheck);
 router.get('/api/authenticate', authResource.authenticate);
 

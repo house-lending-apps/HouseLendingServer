@@ -2,12 +2,12 @@ var express = require('express');
 var app = express();
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-//var multer = require('multer'); // v1.0.5
-//var upload = multer(); // for parsing multipart/form-data
+var config = JSON.parse(fs.readFileSync('config/server-config.json'));
+var databaseClient = require('app/core/db/databaseClient.js');
+var router = require('app/router');
 
-
-var sampleRouter = require('./routers/sampleRoute');
-var loginRouter = require('./routers/loginRoute');
+var sampleRouter = require('app/routers/sampleRoute');
+var loginRouter = require('app/routers/loginRoute');
 
 // Setting cookie Parser
 app.use(cookieParser());
@@ -23,7 +23,12 @@ app.get('/', function (req, res) {
 
 //All the routers with context
 app.use('/auth',loginRouter);
-app.use('/birds', sampleRouter);
+app.use('/sample', sampleRouter);
+
+/*
+app.use('/api',router);
+*/
+databaseClient.init(config);
 
 
 app.listen(3000, function () {
