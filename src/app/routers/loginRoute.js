@@ -1,16 +1,24 @@
-var express = require('express');
-var router = express.Router();
+'use strict';
 
-var authResource = require('../api/auth/authResource');
+(function (loginRouter) {
+    var authResource = require('../api/auth/authResource');
+    loginRouter.app = null;
+
+    loginRouter.init = function (appMain) {
+        var self = this;
+        self.app = appMain;
+        self.setRoutes();
+    };
+
+    loginRouter.setRoutes = function () {
+        var self = this;
+        self.app.route('/api/authenticate')
+            .head(authResource.healthcheck)
+            .get(authResource.authenticate);
+    };
+})(module.exports);
 
 
-// middleware that is specific to this router
-router.use(function timeLog(req, res, next) {
-    next();
-});
 
-// Healthcheck service
-router.head('/api/authenticate', authResource.healthcheck);
-router.get('/api/authenticate', authResource.authenticate);
 
-module.exports = router;
+

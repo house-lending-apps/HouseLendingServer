@@ -1,35 +1,28 @@
-var express = require('express');
-var router = express.Router();
+(function (sampleRouter) {
+    sampleRouter.app = null;
+    var sampleResponse = {
+        'status': '200',
+        'message': 'found the resource'
+    };
 
-var sampleResponse = {
-    'status':'200',
-    'message':'found the resource'
-};
+    sampleRouter.init = function (appMain) {
+        var self = this;
+        self.app = appMain;
+        self.setRoutes();
+    };
 
-// middleware that is specific to this router
-router.use(function timeLog(req, res, next) {
-    console.log('{Time: ', Date.now() , ', request body : ' , req.body ,'} ');
-    console.log('{Time: ', Date.now() , ', request paras : ',  JSON.stringify(req.params) ,'} ');
+    sampleRouter.setRoutes = function () {
+        var self = this;
+        self.app.route('/')
+            .get(function (req, res) {
+                res.send(sampleResponse);
+            });
 
-    /*if(req.cookies.userToken){
-        next();
-    }else {
-        res.status('401').send({'message':'user Token is missing in the request'});
-    }*/
+        self.app.route('/about')
+            .get(function (req, res) {
+                res.send(sampleResponse);
+            });
+    };
+})(module.exports);
 
-    next();
-});
 
-// define the home page route
-router.get('/', function(req, res) {
-  //  res.send('Sample home page');
-    res.send(sampleResponse);
-});
-
-// define the about route
-router.get('/about', function(req, res) {
-    //res.send('About Sample');
-    res.json(sampleResponse);
-});
-
-module.exports = router;

@@ -28,12 +28,12 @@
         var defer = q.defer();
 
         /*databaseClient.find(table, userDetails).then(function (result) {
-            defer.resolve(result);
-        }, function (error) {
-            defer.reject(error);
-        });*/
+         defer.resolve(result);
+         }, function (error) {
+         defer.reject(error);
+         });*/
 
-        setTimeout(function(){
+        setTimeout(function () {
             defer.resolve(mockUser);
         }, 500);
 
@@ -41,3 +41,4 @@
     };
 
 })(module.exports);
+

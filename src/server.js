@@ -1,13 +1,14 @@
 var express = require('express');
 var app = express();
+var router = express.Router();
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var config = JSON.parse(fs.readFileSync('config/server-config.json'));
-var databaseClient = require('app/core/db/databaseClient.js');
-var router = require('app/router');
+var fs = require('fs');
 
-var sampleRouter = require('app/routers/sampleRoute');
-var loginRouter = require('app/routers/loginRoute');
+var config = JSON.parse(fs.readFileSync('./config/server-config.json'));
+var databaseClient = require('./app/core/db/databaseClient.js');
+var sampleRouter = require('./app/routers/sampleRoute');
+var loginRouter = require('./app/routers/loginRoute');
 
 // Setting cookie Parser
 app.use(cookieParser());
@@ -16,19 +17,29 @@ app.use(cookieParser());
 app.use(bodyParser.json()); // for parsing application/json
 //app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-// Sample endpoint
-app.get('/', function (req, res) {
-    res.send('Hello World!');
+// middleware that is specific to this router
+router.use(function (req, res, next) {
+    var logResp = {
+        'Time': Date.now(),
+        'request api': req.path,
+        'request method': req.method,
+        'request body': req.body,
+        'request paras': JSON.stringify(req.params)
+    };
+    console.log(JSON.stringify(logResp));
+    next();
 });
 
-//All the routers with context
-app.use('/auth',loginRouter);
-app.use('/sample', sampleRouter);
-
-/*
-app.use('/api',router);
-*/
+// Core Components Init
 databaseClient.init(config);
+
+
+// Initiate Routers
+loginRouter.init(app);
+sampleRouter.init(app);
+
+// Register router with app
+app.get('/', router);
 
 
 app.listen(3000, function () {

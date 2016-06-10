@@ -1,15 +1,12 @@
+'use strict';
+
 (function (databaseClient) {
+
     var q = require('q');
-    var _ = require('lodash');
     var mongoClient = require('mongodb').MongoClient;
-    var connection = undefined;
-    var mongodbURL = '';
 
-
-    databaseClient.init = function (config) {
-        mongodbURL = config.mongo - db - url;
-
-    };
+    var connection;
+    var mongodbURL;
 
     var getConnection = function () {
         if (connection === undefined) {
@@ -22,9 +19,9 @@
                 connection = db;
                 return connection;
             });
-        } else {
-            return connection;
         }
+
+        return connection;
 
     };
 
@@ -34,6 +31,11 @@
         console.log('Connection to db closed');
     };
 
+
+    databaseClient.init = function (config) {
+        mongodbURL = config.mongo_db_url;
+        return true;
+    };
 
     // Exposing 4 methods to play around
     /*
@@ -98,25 +100,21 @@
         var result = [];
         cursor.each(function (err, doc) {
             if (err) {
-
-            } else {
-                if (doc != null) {
-                    result.push(doc);
-                } else {
-
-                }
+                console.log('Error thrown while retrieving data');
+            } else if (doc !== null) {
+                result.push(doc);
             }
         });
 
         return result;
     };
 
-
+    /** Exit function - Close connection before exit **/
     databaseClient.exit = function () {
         closeConnection();
     };
 
 
-}(module.exports));
+})(module.exports);
 
 
