@@ -2,7 +2,7 @@
 
 (function (authService) {
 
-    var databaseClient = require('../../core/db/databaseClient');
+    var databaseClient = require('../../core/databaseClient');
     var q = require('q');
     var table = 'users';
 

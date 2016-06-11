@@ -6,11 +6,11 @@ var bodyParser = require('body-parser');
 var fs = require('fs');
 
 var config = JSON.parse(fs.readFileSync('./config/server-config.json'));
-var databaseClient = require('./app/core/db/databaseClient.js');
+var databaseClient = require('./app/core/databaseClient.js');
 var sampleRoutes = require('./app/routers/sampleRoutes');
 var loginRoutes = require('./app/routers/loginRoutes');
 var userRoutes = require('./app/routers/userRoutes');
-
+var advertisementRoutes = require('./app/routers/advertisementRoutes');
 // Setting cookie Parser
 app.use(cookieParser());
 
@@ -39,6 +39,7 @@ databaseClient.init(config);
 sampleRoutes.init(app);
 loginRoutes.init(app);
 userRoutes.init(app);
+advertisementRoutes.init(app);
 
 // Register router with app
 app.get('/', router);
