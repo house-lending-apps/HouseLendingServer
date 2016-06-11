@@ -14,7 +14,8 @@
         var self = this;
         self.app.route('/api/authenticate')
             .head(authResource.healthcheck)
-            .get(authResource.authenticate);
+            .get(authResource.getUserDetails)
+            .post(authResource.authenticate);
     };
 })(module.exports);
 

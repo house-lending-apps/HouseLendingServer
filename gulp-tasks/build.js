@@ -18,7 +18,7 @@ gulp.task('build', function (cb) {
 
 // Clean the dist before starting
 gulp.task('clean-dist', function () {
-    return gulp.src(config.paths.dist, {read: false})
+    return gulp.src(config.paths.dist + '/*.*', {read: false})
         .pipe($.clean());
 });
 
