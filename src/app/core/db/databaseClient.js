@@ -9,20 +9,22 @@
     var mongodbURL;
 
     var getConnection = function () {
+        var defer = q.defer();
+
         if (connection === undefined) {
             mongoClient.connect(mongodbURL, function (err, db) {
-                //mongoClient.connect('mongodb://localhost:27017/house-lending', function(err, db) {
                 if (err) {
                     console.log(err);
-                    throw err;
+                    defer.reject(err);
                 }
                 connection = db;
-                return connection;
+                defer.resolve(connection);
             });
+        } else {
+            defer.resolve(connection);
         }
 
-        return connection;
-
+        return defer.promise;
     };
 
     // we should call this whenever application close
@@ -46,46 +48,57 @@
      */
 
     databaseClient.insert = function (table, payload) {
-        var db = getConnection();
-        var collection = db.collection(table);
         var defer = q.defer();
 
-        if (Array.isArray(payload)) {
-            collection.insertMany(payload, function (err, result) {
-                if (err) {
-                    defer.reject(err);
-                } else {
-                    defer.resolve(result);
-                }
-            });
-        } else {
-            collection.insertOne(payload, function (err, result) {
-                if (err) {
-                    defer.reject(err);
-                } else {
-                    defer.resolve(result);
-                }
-            });
-        }
+        getConnection().then(function (db) {
+            var collection = db.collection(table);
+
+            if (Array.isArray(payload)) {
+                collection.insertMany(payload, function (err, result) {
+                    if (err) {
+                        defer.reject(err);
+                    } else {
+                        defer.resolve(result);
+                    }
+                });
+            } else {
+                collection.insertOne(payload, function (err, result) {
+                    if (err) {
+                        defer.reject(err);
+                    } else {
+                        defer.resolve(result);
+                    }
+                });
+            }
+
+        }, function (err) {
+            defer.reject(err);
+        });
+
         return defer.promise;
     };
 
     /** Update database **/
     databaseClient.update = function (table, searchFilter, updatedPayload) {
         var defer = q.defer();
-        var db = getConnection();
-        var collection = db.collection(table);
 
-        collection.updateOne(
-            searchFilter,
-            updatedPayload,
-            function (err, result) {
-                if (err) {
-                    defer.reject(err);
-                } else {
-                    defer.resolve(result);
-                }
-            });
+        getConnection().then(function (db) {
+            var collection = db.collection(table);
+            collection.updateOne(
+                searchFilter,
+                updatedPayload,
+                function (err, result) {
+                    if (err) {
+                        defer.reject(err);
+                    } else {
+                        defer.resolve(result);
+                    }
+                });
+
+        }, function (err) {
+            defer.reject(err);
+        });
+
 
         return defer.promise;
     };
@@ -93,20 +106,21 @@
     /** Find query to return data **/
     databaseClient.find = function (table, searchFilter) {
         var defer = q.defer();
-        var db = getConnection();
-        var collection = db.collection(table);
 
-        var cursor = collection.find(searchFilter);
-        var result = [];
-        cursor.each(function (err, doc) {
-            if (err) {
-                console.log('Error thrown while retrieving data');
-            } else if (doc !== null) {
-                result.push(doc);
-            }
+        getConnection().then(function (db) {
+            var collection = db.collection(table);
+            collection.find(searchFilter).toArray(function (err, docs) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(docs);
+                }
+
+            });
+        }, function (err) {
+            defer.reject(err);
         });
-
-        return result;
+        return defer.promise;
     };
 
     /** Exit function - Close connection before exit **/

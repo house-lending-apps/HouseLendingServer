@@ -1,17 +1,17 @@
-(function (sampleRouter) {
-    sampleRouter.app = null;
+(function (sampleRoutes) {
+    sampleRoutes.app = null;
     var sampleResponse = {
         'status': '200',
         'message': 'found the resource'
     };
 
-    sampleRouter.init = function (appMain) {
+    sampleRoutes.init = function (appMain) {
         var self = this;
         self.app = appMain;
         self.setRoutes();
     };
 
-    sampleRouter.setRoutes = function () {
+    sampleRoutes.setRoutes = function () {
         var self = this;
         self.app.route('/')
             .get(function (req, res) {

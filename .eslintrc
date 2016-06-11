@@ -98,7 +98,7 @@
     }],
     "no-use-before-define": 0,
     "yoda": [2, "never"],
-    "consistent-return": 2,
+    //"consistent-return": 2,
     "spaced-line-comment": 0,
     "strict": [0, "safe"],
     "eqeqeq": 2,

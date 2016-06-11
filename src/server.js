@@ -7,15 +7,16 @@ var fs = require('fs');
 
 var config = JSON.parse(fs.readFileSync('./config/server-config.json'));
 var databaseClient = require('./app/core/db/databaseClient.js');
-var sampleRouter = require('./app/routers/sampleRoute');
-var loginRouter = require('./app/routers/loginRoute');
+var sampleRoutes = require('./app/routers/sampleRoutes');
+var loginRoutes = require('./app/routers/loginRoutes');
+var userRoutes = require('./app/routers/userRoutes');
 
 // Setting cookie Parser
 app.use(cookieParser());
 
 //Expecting all body requests to be JSON
 app.use(bodyParser.json()); // for parsing application/json
-//app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 // middleware that is specific to this router
 router.use(function (req, res, next) {
@@ -35,8 +36,9 @@ databaseClient.init(config);
 
 
 // Initiate Routers
-loginRouter.init(app);
-sampleRouter.init(app);
+sampleRoutes.init(app);
+loginRoutes.init(app);
+userRoutes.init(app);
 
 // Register router with app
 app.get('/', router);

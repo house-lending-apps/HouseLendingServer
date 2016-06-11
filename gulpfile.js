@@ -15,7 +15,7 @@ gulp.task('develop', function(cb) {
        // 'install',
         'analyze',
         'build',
-        'run-app',
+        //'run-app',
         cb
     );
 });
