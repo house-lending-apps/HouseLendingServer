@@ -20,7 +20,6 @@ if(process.env.PORT) {
 }
 
 
-
 // Setting cookie Parser
 app.use(cookieParser());
 
@@ -57,7 +56,7 @@ advertisementRoutes.init(app);
 // Register router with app
 app.get('/', router);
 
-
-app.listen(port, function () {
-    console.log('Example app listening on port ' + port + ' !');
+app.set('port', port);
+app.listen(app.get('port'), function() {
+    console.log('Node app is running on port', app.get('port'));
 });
