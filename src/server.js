@@ -14,6 +14,13 @@ var loginRoutes = require('./app/routers/loginRoutes');
 var userRoutes = require('./app/routers/userRoutes');
 var advertisementRoutes = require('./app/routers/advertisementRoutes');
 
+var port = config.port === undefined ? '9000' : config.port;
+if(process.env.PORT) {
+    port = process.env.PORT;
+}
+
+
+
 // Setting cookie Parser
 app.use(cookieParser());
 
@@ -51,6 +58,6 @@ advertisementRoutes.init(app);
 app.get('/', router);
 
 
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
+app.listen(port, function () {
+    console.log('Example app listening on port ' + port + ' !');
 });
