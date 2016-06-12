@@ -5,5 +5,5 @@
   "api_key": "mkulkarni",
   "version": "2",
   "client_template": "/",
-  "mongo_db_url":"mongodb://localhost:27017/house-lending-db"
+  "MONGO_DB_URL":"mongodb://localhost:27017/house-lending-db"
 }
