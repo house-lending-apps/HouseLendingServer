@@ -14,7 +14,7 @@ var loginRoutes = require('./app/routers/loginRoutes');
 var userRoutes = require('./app/routers/userRoutes');
 var advertisementRoutes = require('./app/routers/advertisementRoutes');
 
-var port = config.port === undefined ? '9000' : config.port;
+var port = serverConfig.port === undefined ? '9000' : serverConfig.port;
 if(process.env.PORT) {
     port = process.env.PORT;
 }
