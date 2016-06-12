@@ -1,7 +1,7 @@
 {
   "paths" : {
     "scripts": ["src/**/*.js"],
-    "configPath":["src/config/server-config.json"],
+    "configPath":["config/appconfig.json"],
     "dist": "dist"
   }
 }

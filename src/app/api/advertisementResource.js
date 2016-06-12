@@ -16,7 +16,6 @@
      * Get Advertisement
      */
     advertisementResource.getAdvertisement = function (req, res) {
-        console.log(JSON.stringify(req.quey));
         console.log('Request to Get Advertise Details for id : ' + req.query.id);
 
         if (!req.query.id) {
@@ -25,15 +24,14 @@
             var advertisementDetails = {
                 id: req.query.id
             };
-            advertisementService.find(advertisementDetails).then(function(result) {
+            advertisementService.find(advertisementDetails).then(function (result) {
                 //advertisementService.findMocked(advertisementDetails).then(function(result) {
-                    return res.status(200).json(result);
+                return res.status(200).json(result);
             }, function (error) {
                 return res.status(500).json(error);
             });
         }
     };
-
 
 
     /** Add Advertisement **/
@@ -44,11 +42,11 @@
             totalRecordsInserted: 0
         };
 
-        advertisementService.addAdvertise(advertisements).then(function(result){
+        advertisementService.addAdvertise(advertisements).then(function (result) {
             resultResp.message = 'Advertisements added successfully';
             resultResp.totalRecordsInserted = result.length;
             return res.status(200).json(resultResp);
-        }, function(err){
+        }, function (err) {
             resultResp.message = 'Unable to add advertisements';
             resultResp.dbErrorMessage = err;
             return res.status(500).json(resultResp);

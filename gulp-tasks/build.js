@@ -3,7 +3,7 @@
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 var runSequence = require('run-sequence');
-var config = require('../src/config/config.json');
+var config = require('../config/config.json');
 
 
 // Build Application
@@ -25,15 +25,13 @@ gulp.task('clean-dist', function () {
 // Build all JS
 gulp.task('build-js', function () {
     return gulp.src(config.paths.scripts)
-        //.pipe(concat('server.js'))
-        //.pipe(ng annotate, minify, etc)
-        .pipe(gulp.dest(config.paths.dist));
+         .pipe(gulp.dest(config.paths.dist));
 });
 
 // Build all JS
 gulp.task('copy-config', function () {
     return gulp.src(config.paths.configPath)
-        //.pipe(concat('server.js'))
-        //.pipe(ng annotate, minify, etc)
         .pipe(gulp.dest(config.paths.dist + '/config'));
 });
+
+

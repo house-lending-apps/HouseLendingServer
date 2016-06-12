@@ -16,7 +16,6 @@
      * authenticate
      */
     userResource.getUser = function (req, res) {
-        console.log(JSON.stringify(req.quey));
         console.log('Request to Get User Details for user : ' + req.query.user);
 
         if (!req.query.user) {

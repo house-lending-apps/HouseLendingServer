@@ -5,12 +5,15 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 
-var config = JSON.parse(fs.readFileSync('./config/server-config.json'));
+var serverConfig = JSON.parse(fs.readFileSync('./config/appconfig.json'));
+var template_dir = serverConfig.client_template;
+
 var databaseClient = require('./app/core/databaseClient.js');
 var sampleRoutes = require('./app/routers/sampleRoutes');
 var loginRoutes = require('./app/routers/loginRoutes');
 var userRoutes = require('./app/routers/userRoutes');
 var advertisementRoutes = require('./app/routers/advertisementRoutes');
+
 // Setting cookie Parser
 app.use(cookieParser());
 
@@ -31,9 +34,12 @@ router.use(function (req, res, next) {
     next();
 });
 
-// Core Components Init
-databaseClient.init(config);
+// Definding where the templates be found
+console.log('template_dir : ', template_dir);
+app.use('/', express.static(__dirname + '/'));
 
+// Core Components Init
+databaseClient.init(serverConfig);
 
 // Initiate Routers
 sampleRoutes.init(app);

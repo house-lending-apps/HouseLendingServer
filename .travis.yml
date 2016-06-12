@@ -1,0 +1,29 @@
+language: node_js
+node_js:
+  - "6.2.0"
+env:
+  - NODE_ENV=travis
+branches:
+  except:
+    - /-nobuild$/  
+cache:
+  apt : true
+  directories:
+    - node_modules
+notifications:
+  email:
+      - kulkarni.mak172@gmail.com
+before_install:
+ - export COMMIT_MESSAGE=$(git show -s --format=%B $TRAVIS_COMMIT | tr -d '\n')
+ - export REPOSITORY_NAME=$(echo $TRAVIS_REPO_SLUG | gawk -F/ '{print $2}')
+ - npm install npm@latest -g
+install:
+ - echo $COMMIT_MESSAGE
+ - npm install
+ - npm install -g gulp
+ - gulp run-prod
+before_script:
+  - "export DISPLAY=:99.0"
+after_success:
+  - bash deploy.sh
+

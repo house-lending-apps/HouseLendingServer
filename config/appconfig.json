@@ -1,0 +1,9 @@
+{
+  "host": "127.0.0.1",
+  "port": "9000",
+  "name": "Mahesh Kulkarni",
+  "api_key": "mkulkarni",
+  "version": "2",
+  "client_template": "/",
+  "mongo_db_url":"mongodb://localhost:27017/house-lending-db"
+}

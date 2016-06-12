@@ -5,6 +5,11 @@
   "main": "server.js",
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "start": "npm run installDependencies && npm run startApplication",
+    "installDependencies":"npm install",
+    "startApplication":"node server.js"
+  },
   "dependencies": {
     "add-stream": "^1.0.0",
     "body-parser": "^1.15.0",
@@ -16,17 +21,18 @@
     "gulp-concat": "2.6.0",
     "gulp-copy": "0.0.2",
     "gulp-data": "1.2.1",
+    "gulp-eslint": "2.0.0",
     "gulp-install": "0.6.0",
     "gulp-load-plugins": "^1.2.4",
     "gulp-nodemon": "^2.0.6",
     "gulp-plato": "1.0.2",
-    "require-dir": "0.3.0",
-    "run-sequence": "1.1.5",
-    "sc5-styleguide": "0.3.43",
+    "gulp-watch": "^4.3.6",
     "lodash": "^4.13.1",
     "mongodb": "^2.1.16",
     "multer": "^1.1.0",
     "q": "^1.4.1",
-    "gulp-eslint": "2.0.0"
+    "require-dir": "0.3.0",
+    "run-sequence": "1.1.5",
+    "sc5-styleguide": "0.3.43"
   }
 }
