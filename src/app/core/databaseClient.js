@@ -35,12 +35,11 @@
 
 
     databaseClient.init = function (config) {
-        if(process.env.MONGO_DB_URL && process.env.MONGO_DB_URL !== '') {
-            mongodbURL = process.env.mongodbURL;
+        if(process.env.MONGO_DB_URL && process.env.MONGO_DB_URL !== undefined) {
+            mongodbURL = process.env.MONGO_DB_URL;
         } else {
-            mongodbURL = config.mongo_db_url;
+            mongodbURL = config.MONGO_DB_URL;
         }
-
         return true;
     };
 

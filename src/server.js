@@ -19,6 +19,9 @@ if(process.env.PORT) {
     port = process.env.PORT;
 }
 
+if(process.env.MONGO_DB_URL) {
+    process.env.MONGO_DB_URL = serverConfig.MONGO_DB_URL;
+}
 
 // Setting cookie Parser
 app.use(cookieParser());
