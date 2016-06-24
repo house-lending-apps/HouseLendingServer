@@ -15,8 +15,12 @@
 
         self.app.route('/api/advertisements')
             .head(advertisementResource.healthcheck)
-            .get(advertisementResource.getAdvertisement)
+            .get(advertisementResource.getAdvertisements)
             .post(advertisementResource.addAdvertisement);
+
+        self.app.route('/api/advertisements/:id')
+            .get(advertisementResource.getAdvertisement);
+
     };
 })(module.exports);
 

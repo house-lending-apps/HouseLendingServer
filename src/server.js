@@ -15,11 +15,11 @@ var userRoutes = require('./app/routers/userRoutes');
 var advertisementRoutes = require('./app/routers/advertisementRoutes');
 
 var port = serverConfig.port === undefined ? '9000' : serverConfig.port;
-if(process.env.PORT) {
+if (process.env.PORT) {
     port = process.env.PORT;
 }
 
-if(process.env.MONGO_DB_URL) {
+if (process.env.MONGO_DB_URL) {
     process.env.MONGO_DB_URL = serverConfig.MONGO_DB_URL;
 }
 
@@ -28,7 +28,20 @@ app.use(cookieParser());
 
 //Expecting all body requests to be JSON
 app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
+
+// Add headers
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+
+    // Pass to next layer of middleware
+    next();
+});
 
 // middleware that is specific to this router
 router.use(function (req, res, next) {
@@ -60,6 +73,6 @@ advertisementRoutes.init(app);
 app.get('/', router);
 
 app.set('port', port);
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
 });

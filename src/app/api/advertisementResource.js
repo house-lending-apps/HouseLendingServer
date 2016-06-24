@@ -16,16 +16,15 @@
      * Get Advertisement
      */
     advertisementResource.getAdvertisement = function (req, res) {
-        console.log('Request to Get Advertise Details for id : ' + req.query.id);
+        console.log('Request to Get Advertise Details for id : ' + req.params.id);
 
-        if (!req.query.id) {
+        if (!req.params.id) {
             return res.status(404).json({'error': 'unable to find user'});
         } else {
             var advertisementDetails = {
-                id: req.query.id
+                id: req.params.id
             };
             advertisementService.find(advertisementDetails).then(function (result) {
-                //advertisementService.findMocked(advertisementDetails).then(function(result) {
                 return res.status(200).json(result);
             }, function (error) {
                 return res.status(500).json(error);
@@ -33,6 +32,16 @@
         }
     };
 
+    /** Get List of all Advertisements **/
+    advertisementResource.getAdvertisements = function (req, res) {
+
+        advertisementService.find({}).then(function (result) {
+            return res.status(200).json(result);
+        }, function (error) {
+            return res.status(500).json(error);
+        });
+
+    };
 
     /** Add Advertisement **/
     advertisementResource.addAdvertisement = function (req, res) {
