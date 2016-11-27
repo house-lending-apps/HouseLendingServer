@@ -1,5 +1,5 @@
 {
-  "name": "HouseLendingServer",
+  "name": "House-Lending-Server",
   "version": "1.0.0",
   "description": "This is Hould lending application server side",
   "main": "server.js",
